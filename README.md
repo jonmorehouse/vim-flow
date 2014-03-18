@@ -33,6 +33,26 @@ General Usage
 
 # attempt to run project
 <Leader>rp
+
+# managing files of interest within a project
+# lock to the current file
+<Leader>ll
+
+# unlock to switch between files
+<Leader>lu
+
+# switch the lock to the current buffer
+<Leader>lu
+```
+
+Python Usage
+------------
+
+```
+# .local.vimrc
+let g:pythonRunCommand=""
+let g:pythonTestCommand=""
+
 ```
 
 GoLang Usage

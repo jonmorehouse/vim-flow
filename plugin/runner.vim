@@ -36,7 +36,7 @@ autocmd VimEnter * call Runner#Bootstrap()
 """
 " now configure the leader mappings as needed
 function TestMapper(type)
-    call Utilities#BasePath()
+    :call Utilities#BasePath()
     let functionName="File_Runners#". a:type ."TestRunner"
     if exists("*".functionName)
         " bootstrap the file command
@@ -50,7 +50,7 @@ endfunction
 
 " initialize run commands
 function RunMapper(type)
-    call Utilities#BasePath()
+    :call Utilities#BasePath()
     let functionName="File_Runners#". a:type ."Runner"
     if exists("*". functionName)
         " bootstrap the file command
