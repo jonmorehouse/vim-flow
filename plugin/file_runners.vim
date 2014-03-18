@@ -118,6 +118,7 @@ endfunction
 """ Cucumber Project Runners
 """
 function File_Runners#CucumberRunner(target)
+    echo a:target
     " build entire project as needed
     if isdirectory(a:target)
         :call Utilities#CleanShell("cd ". g:basePath, "cucumber")
