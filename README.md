@@ -1,6 +1,15 @@
 Vim Runner
 ==========
 
+Notes / Thoughts
+----------------
+
+* every time buffers are created / switched, we need to call the BootstrapFile method
+  * configure test / run scripts
+  * configure the current file variable
+  * ensure the basePath elements and leader mappings are correctly configured
+* implement vimunit 
+
 Usage
 -----
 
