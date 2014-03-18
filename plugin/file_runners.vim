@@ -41,7 +41,7 @@ function File_Runners#GoTestRunner(target)
 endfunction
 
 """
-""" Ruby 
+""" Ruby Project Runners
 """
 
 """
@@ -52,13 +52,23 @@ endfunction
 """ Docker Project Runners
 """
 function File_Runners#DockerfileRunner(...)
-    
+
+    " initialize the tag needed
+    let tag="test"
+    if exists("g:dockerTag")
+        tag=g:dockerTag
+    endif
+    " initialize the run command
+    let run="docker run -i -t ". tag ." /bin/bash" 
+    if exists("g:dockerRunCommand")
+        let run=g:dockerRunCommand
+    endif
+    " now call the correct command
     
 endfunction
 
 function File_Runners#DockerfileTestRunner(...)
         
-
 endfunction
 
 """
