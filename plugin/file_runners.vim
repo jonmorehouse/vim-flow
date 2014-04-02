@@ -147,4 +147,10 @@ function File_Runners#JavascriptRunner(target)
 
 endfunction
 
+"""
+""" Haskell
+"""
+function File_Runners#HaskellRunner(target)
+    :call Utilities#CleanShell("runghc ". @%)
+endfunction
 
