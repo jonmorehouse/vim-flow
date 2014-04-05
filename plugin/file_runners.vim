@@ -98,9 +98,9 @@ endfunction
 function File_Runners#RubyRunner(target)
 
     if isdirectory(a:target) && exists("g:runCommand")
-        :call CleanShell("cd ". g:basePath, g:runCommand)
+        :call Utilities#CleanShell("cd ". g:basePath, g:runCommand)
     else
-        :call CleanShell("ruby ". a:target)
+        :call Utilities#CleanShell("ruby ". a:target)
     endif
 endfunction
 
