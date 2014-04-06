@@ -79,7 +79,7 @@ function File_Runners#DockerfileRunner(...)
         let command=g:dockerRunCommand
     endif
     " now call the correct command
-    :call CleanShell(command)
+    :call Utilities#CleanShell(command)
 endfunction
 
 function File_Runners#DockerfileTestRunner(...)
@@ -89,7 +89,7 @@ function File_Runners#DockerfileTestRunner(...)
         tag=g:dockerTag
     endif
     let command="docker build -t ". tag ." ."
-    :call CleanShell(command)
+    :call Utilities#CleanShell(command)
 endfunction
 
 """
