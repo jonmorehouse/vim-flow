@@ -71,7 +71,7 @@ function File_Runners#DockerfileRunner(...)
     " initialize the tag needed
     let tag="test"
     if exists("g:dockerTag")
-        tag=g:dockerTag
+        let tag=g:dockerTag
     endif
     " initialize the run command
     let command="docker run -i -t ". tag ." /bin/bash" 
@@ -86,7 +86,8 @@ function File_Runners#DockerfileTestRunner(...)
     " initialize the tag needed
     let tag="test"
     if exists("g:dockerTag")
-        tag=g:dockerTag
+        echo "RUNNER"
+        let tag=g:dockerTag
     endif
     let command="docker build -t ". tag ." ."
     :call Utilities#CleanShell(command)
