@@ -138,7 +138,11 @@ endfunction
 """
 function File_Runners#CoffeeRunner(target)
 
-    :call Utilities#CleanShell("coffee ". a:target)
+    if filereadable(g:basePath ."/Cakefile")
+        call Utilities#CleanShell("cake test")
+    else
+        call Utilities#CleanShell("coffee ". a:target)
+    endif
 
 endfunction
 
