@@ -22,6 +22,7 @@ function Runner#BootstrapFile()
         call TestMapper(type)
         " bootstrap run mapping
         call RunMapper(type)
+        call DebugMapper(type)
         " now that we have mapped the commands, call the local vimrc to ensure
         " that no re-mapping occurs
         call Utilities#LoadLocalVimrc()
@@ -100,4 +101,15 @@ function RunMapper(type)
     endif
 endfunction
 
+function DebugMapper(type)
+    :call Utilities#BasePath()
+    let functionName="File_Runners#". a:type ."DebugRunner"
+    let path=expand('%:p') 
+
+    if exists("*".functionName)
+        " bootstrap the file command
+        let fileCommand=":call ". functionName ."(\"". path ."\")"
+        execute("map<Leader>rd ". fileCommand ."<CR>")
+    endif
+endfunction
 

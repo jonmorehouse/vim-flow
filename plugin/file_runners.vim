@@ -146,6 +146,14 @@ function File_Runners#CoffeeRunner(target)
 
 endfunction
 
+function File_Runners#CoffeeDebugRunner(target)
+
+    if filereadable(g:basePath. "/Cakefile")
+        call Utilities#CleanShell("cake debug")
+    endif
+
+endfunction
+
 function File_Runners#JavascriptRunner(target)
     
     :call Utilities#CleanShell("node ". a:target)
