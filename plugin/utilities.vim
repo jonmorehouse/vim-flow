@@ -1,7 +1,7 @@
 "check to see if argv was passed
 "resolve argv to grab the base directory
 "grab the current working directory
-function Utilities#BasePath()
+fu! Utilities#BasePath()
     if exists("g:basePath")
         return
     endif
@@ -9,7 +9,7 @@ function Utilities#BasePath()
 endfunction
 
 " local.vimrc override!
-function Utilities#LoadLocalVimrc()
+fu! Utilities#LoadLocalVimrc()
     call Utilities#BasePath()   
     let localPath = g:basePath ."/.local.vimrc"
     if filereadable(localPath)
@@ -18,9 +18,9 @@ function Utilities#LoadLocalVimrc()
 endfunction
 
 " run a command in a clean shell
-function Utilities#CleanShell(...)
+fu! Utilities#CleanShell(...)
     " execute a single command
-    function ExecuteCommand(command)
+    fu! ExecuteCommand(command)
         execute "! ". a:command
     endfunction
     " always clear the screen before executing anything
@@ -36,11 +36,11 @@ function Utilities#CleanShell(...)
     call ExecuteCommand(command)
 endfunction
 
-function Utilities#GetFileType(path)
+fu! Utilities#GetFileType(path)
     return &ft
 endfunction
 
-function Utilities#Capitalize(input)
+fu! Utilities#Capitalize(input)
     return substitute(a:input, '.', '\u&', '') 
     "return join([toupper(a:input[0]), a:input[1:len(a:input)]], "")
 endfunction

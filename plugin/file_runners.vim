@@ -1,7 +1,7 @@
 """
 """ Go Project runners
 """
-function File_Runners#GoRunner(target)
+fu! File_Runners#GoRunner(target)
     " run the project
     if isdirectory(a:target)
         " find the root main.go file
@@ -18,7 +18,7 @@ function File_Runners#GoRunner(target)
 
 endfunction
 
-function File_Runners#GoTestRunner(target)
+fu! File_Runners#GoTestRunner(target)
     " check to see if any go test flags are set ...
     let flags=""
     if exists("g:goTestFlags")
@@ -41,7 +41,7 @@ endfunction
 """
 """ Python Project Runners
 """
-function File_Runners#PythonRunner(target)
+fu! File_Runners#PythonRunner(target)
 
     if isdirectory(a:target) && exists("g:runCommand")
         :call Utilities#CleanShell(g:runCommand)
@@ -52,7 +52,7 @@ function File_Runners#PythonRunner(target)
 
 endfunction
 
-function File_Runners#PythonTestRunner(target)
+fu! File_Runners#PythonTestRunner(target)
     
     if isdirectory(a:target)
         :call Utilities#CleanShell("cd ". g:basePath, "source bin/activate", "\./bin/nosetests --nocapture")
@@ -67,7 +67,7 @@ endfunction
 """
 """ Docker Project Runners
 """
-function File_Runners#DockerfileRunner(...)
+fu! File_Runners#DockerfileRunner(...)
     " initialize the tag needed
     let tag="test"
     if exists("g:dockerTag")
@@ -82,7 +82,7 @@ function File_Runners#DockerfileRunner(...)
     :call Utilities#CleanShell(command)
 endfunction
 
-function File_Runners#DockerfileTestRunner(...)
+fu! File_Runners#DockerfileTestRunner(...)
     " initialize the tag needed
     let tag="test"
     if exists("g:dockerTag")
@@ -96,7 +96,7 @@ endfunction
 """
 """ Ruby Project Runners
 """
-function File_Runners#RubyRunner(target)
+fu! File_Runners#RubyRunner(target)
 
     if isdirectory(a:target) && exists("g:runCommand")
         :call Utilities#CleanShell("cd ". g:basePath, g:runCommand)
@@ -105,7 +105,7 @@ function File_Runners#RubyRunner(target)
     endif
 endfunction
 
-function File_Runners#RubyTestRunner(target)
+fu! File_Runners#RubyTestRunner(target)
     
     " check rake tasks to see if tests exists
     " some ideas could be - look into rake 
@@ -118,7 +118,7 @@ endfunction
 """
 """ Cucumber Project Runners
 """
-function File_Runners#CucumberRunner(target)
+fu! File_Runners#CucumberRunner(target)
     echo a:target
     " build entire project as needed
     if isdirectory(a:target)
@@ -129,14 +129,14 @@ function File_Runners#CucumberRunner(target)
     endif
 endfunction
 
-function File_Runners#CucumberTestRunner(target)
+fu! File_Runners#CucumberTestRunner(target)
     :call File_Runners#CucumberRunner(a:target)
 endfunction
 
 """
 """ Coffeescript/Node Project Runners
 """
-function File_Runners#CoffeeRunner(target)
+fu! File_Runners#CoffeeRunner(target)
 
     if filereadable(g:basePath ."/Cakefile")
         call Utilities#CleanShell("cake test")
@@ -146,7 +146,7 @@ function File_Runners#CoffeeRunner(target)
 
 endfunction
 
-function File_Runners#CoffeeDebugRunner(target)
+fu! File_Runners#CoffeeDebugRunner(target)
 
     if filereadable(g:basePath. "/Cakefile")
         call Utilities#CleanShell("cake debug")
@@ -154,7 +154,7 @@ function File_Runners#CoffeeDebugRunner(target)
 
 endfunction
 
-function File_Runners#JavascriptRunner(target)
+fu! File_Runners#JavascriptRunner(target)
     
     :call Utilities#CleanShell("node ". a:target)
 
@@ -163,7 +163,7 @@ endfunction
 """
 """ Haskell
 """
-function File_Runners#HaskellRunner(target)
+fu! File_Runners#HaskellRunner(target)
     :call Utilities#CleanShell("runghc ". @%)
 endfunction
 

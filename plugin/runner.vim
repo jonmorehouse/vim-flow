@@ -1,5 +1,5 @@
 " Bootstrap the plugin
-function Runner#Bootstrap()
+fu! Runner#Bootstrap()
     " make sure to bootstrap the basePath as needed
     call Utilities#BasePath()
     " now load up local vimrc files
@@ -15,7 +15,7 @@ function Runner#Bootstrap()
 endfunction
 
 " bootstrap a new buffer / autocommand etc
-function Runner#BootstrapFile()
+fu! Runner#BootstrapFile()
     let type=Utilities#Capitalize(Utilities#GetFileType(@%))
     if !exists("g:fileLock") || g:fileLock != "true"
         " bootstrap test mappings
@@ -29,7 +29,7 @@ function Runner#BootstrapFile()
     endif
 endfunction
 
-function Runner#BootstrapCurrentFile()
+fu! Runner#BootstrapCurrentFile()
     " remove lock
     let g:fileLock="false"
     " bootstrap the current file
@@ -38,7 +38,7 @@ function Runner#BootstrapCurrentFile()
     let g:fileLock="true"
 endfunction
 
-function Runner#ToggleFileLock()
+fu! Runner#ToggleFileLock()
 
     if !exists("g:fileLock")
         let g:fileLock="true"
@@ -71,7 +71,7 @@ map<Leader>lu :call Runner#ToggleFileLock()<CR>
 """ PRIVATE METHODS
 """
 " now configure the leader mappings as needed
-function TestMapper(type)
+fu! TestMapper(type)
     :call Utilities#BasePath()
     let functionName="File_Runners#". a:type ."TestRunner"
     let path=expand('%:p') 
@@ -87,7 +87,7 @@ function TestMapper(type)
 endfunction
 
 " initialize run commands
-function RunMapper(type)
+fu! RunMapper(type)
     :call Utilities#BasePath()
     let functionName="File_Runners#". a:type ."Runner"
     let path=expand('%:p') 
@@ -101,7 +101,7 @@ function RunMapper(type)
     endif
 endfunction
 
-function DebugMapper(type)
+fu! DebugMapper(type)
     :call Utilities#BasePath()
     let functionName="File_Runners#". a:type ."DebugRunner"
     let path=expand('%:p') 
