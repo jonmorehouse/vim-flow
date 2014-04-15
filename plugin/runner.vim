@@ -53,6 +53,15 @@ fu! Runner#ToggleFileLock()
 endfunction
 
 """
+""" Declare Overwritable Functions 
+"""
+"""
+fu! BeforeHook()
+endfunction
+fu! AfterHook()
+endfunction
+
+"""
 """ Autocommand Event Mappings
 """
 " link up autocommands as needed
@@ -93,8 +102,9 @@ fu! RunMapper(type)
     let path=expand('%:p') 
     if exists("*". functionName)
         " bootstrap the file command
-        let fileCommand=":call ". functionName ."(\"". path ."\")"
+        let fileCommand=":call BeforeHook() \\| :call ". functionName ."(\"". path ."\") \\| :call AfterHook()"
         :execute("map<Leader>rr ". fileCommand ."<CR>")
+        :execute("map<Leader>, ". fileCommand ."<CR>")
         " bootstrap the project command
         let projectCommand=":call ". functionName ."(\"". g:basePath ."\")"
         :execute("map<Leader>rp ". projectCommand ."<CR>")
