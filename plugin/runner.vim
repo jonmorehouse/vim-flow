@@ -52,14 +52,15 @@ fu! Runner#ToggleFileLock()
 
 endfunction
 
-"""
-""" Declare Overwritable Functions 
-"""
-"""
-fu! BeforeHook()
-endfunction
-fu! AfterHook()
-endfunction
+if !exists("*BeforeHook")
+    function BeforeHook()
+    endfunction
+endif
+
+if !exists("*AfterHook")
+    function AfterHook()
+    endfunction
+endif
 
 """
 """ Autocommand Event Mappings
@@ -102,9 +103,8 @@ fu! RunMapper(type)
     let path=expand('%:p') 
     if exists("*". functionName)
         " bootstrap the file command
-        let fileCommand=":call BeforeHook() \\| :call ". functionName ."(\"". path ."\") \\| :call AfterHook()"
-        :execute("map<Leader>rr ". fileCommand ."<CR>")
-        :execute("map<Leader>, ". fileCommand ."<CR>")
+        let fileCommand=":call BeforeHook() <CR> \\| :call ". functionName ."(\"". path ."\") \\| :redraw \\| :call AfterHook()<CR>"
+        :execute("map<Leader>, ". fileCommand)
         " bootstrap the project command
         let projectCommand=":call ". functionName ."(\"". g:basePath ."\")"
         :execute("map<Leader>rp ". projectCommand ."<CR>")
