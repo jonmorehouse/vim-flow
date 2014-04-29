@@ -36,6 +36,29 @@ fu! Utilities#CleanShell(...)
     call ExecuteCommand(command)
 endfunction
 
+fu! Utilities#Zsh(...)
+    let command = "source ~/.zshrc && "
+    let c=1
+    while c <= a:0
+        let commandPiece=eval("a:". c)
+        let command=command ." ". commandPiece
+        let c += 1
+    endwhile
+    execute "! ". command
+endfunction
+
+fu! Utilities#CleanZsh(...)
+    let command="printf \"\033c\" && source ~/.zshrc &&" 
+    let c=1
+    while c <= a:0
+        let commandPiece=eval("a:". c)
+        let command=command ." ". commandPiece
+        let c += 1
+    endwhile
+    execute "! ". command
+endfunction
+
+
 fu! Utilities#GetFileType(path)
     return &ft
 endfunction
