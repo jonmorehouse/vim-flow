@@ -1,119 +1,43 @@
-Vim Runner
-==========
+# Vim Runner
+> A framework for developing with vim. Smartly execute files / projects from your current vim session with one key press
 
-ToDo
-----
+## Assumptions / Rules
 
-* add in more base project types
-* move all file runners into their own directory with each being its own file
-* show options / create help command
+1. All executions are based upon the current filepath
+  * this filepath can be locked
+  * checks for git root - run's project settings
+  * single file fallback
+2. Two entry points - Test/Run. These will often be the same
 
-Installation
------
 
-```
-cd ~/dotfiles/vim # or wherever vim configuration is
 
-# install via bundler
-git submodule add git@github.com:jonmorehouse/vim-runner.git bundle/vim-runner
 
-```
-General Usage
--------------
 
-```
-# attempt to run current file
-<Leader>rr
+## Development Notes
 
-# attempt to test current file
-<Leader>rt
+* utilities
+  * identify git path from path
+  * get file extension
 
-# attempt to test project
-<Leader>rtp
+~~~ python.py 
 
-# attempt to run project
-<Leader>rp
+filenames = [Fabfile]
+extensions = []
 
-# managing files of interest within a project
-# lock to the current file
-<Leader>ll
+~~~
 
-# unlock to switch between files
-<Leader>lu
+~~~ ruby.py
 
-# switch the lock to the current buffer
-<Leader>lu
-```
+extensions = [ ]
+filenames = [ ]
 
-Python Usage
-------------
+test(basepath, filepath):
 
-```
-# .local.vimrc
-let g:pythonRunCommand=""
-let g:pythonTestCommand=""
+run(basepath, filepath):
 
-```
 
-GoLang Usage
-------------
+~~~
 
-```
-# .local.vimrc
-# set specific test flags (optional)
-let g:goTestFlags="-vvv"
 
-# main.go
-
-# run the current file
-<Leader>rr 
-
-# run the current project - looks for the root/main.go file
-<Leader>rp
-
-# run tests on the current file
-<Leader>rt
-
-# test current package
-<Leader>rtp
-
-```
-
-Dockerfile Usage
-----------------
-
-```
-# .local.vimrc
-# set specific tag to use for this build (optional, default is test)
-let g:dockerTag=""
-
-# set specific run command (optional, default is to shell in)
-let g:dockerRun=""
-
-# Dockerfile
-
-# run the current dockerfile
-<Leader>rr
-<Leader>rp
-
-# test the current docker file
-<Leader>rt
-<Leader>rtp
-
-```
-
-Cucumber Usage
---------------
-
-```
-# run current spec
-<Leader>rr
-<Leader>rt
-
-# run all specs
-<Leader>rp
-<Leader>rtp
-
-```
 
 
