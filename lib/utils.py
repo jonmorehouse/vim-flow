@@ -6,6 +6,8 @@ try:
 except:
     vim = None
 
+attr_cache = {}
+
 def git_basepath(filepath): 
 
     filedir = os.path.dirname(filepath) 
@@ -27,6 +29,10 @@ def run_command(command_string, clean = True):
     pass
 
 def get_path_attributes(filepath): 
+
+    global attr_cache 
+    if attr_cache.has_key(filepath):
+        return attr_cache.get(filepath)
 
     basepath, git = git_basepath(filepath)
     basename = os.path.basename(filepath)
