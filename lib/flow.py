@@ -2,6 +2,8 @@ import vim
 import utils
 import os
 import imp
+import glob
+import modules
 
 filelock = None
 
@@ -21,7 +23,7 @@ def lock():
         filelock = None
         print "File unlocked"
 
-# private methods
+
 def _run(method = "run"):
 
     # generate file information to be passed around as kwargs
@@ -30,6 +32,13 @@ def _run(method = "run"):
 
     # find the correct module 
     module = _get_module(attrs.get("filename"), attrs.get("extension"))
+
+    if not module or not hasattr(module, method):
+        print "No module available for this filepath"
+        return
+
+    # call method
+    getattr(module, method)(**attrs)
     
 def _get_file_path():
 
@@ -41,7 +50,7 @@ def _get_file_path():
 def _get_module(filename, extension):
 
     # check all modules
-    for module in modules:
+    for module_name, module in modules.modules().iteritems():
         # check against extension
         if extension and extension in module.extensions:
             return module
