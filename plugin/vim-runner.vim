@@ -1,11 +1,11 @@
-if exists("g:vim_runner_loaded") || &cp
+if exists("g:vim_flow_load") || &cp
   finish
 endif
-let g:vim_runner_loaded = 1
+let g:vim_flow_loaded = 1
 
 " make sure that vim is compiled with correct python2.7 suppor
 if !has("python")
-  echo "vim-runner requires python support"
+  echo "vim-flow requires python support"
   finish
 endif
 
@@ -19,12 +19,16 @@ import imp
 base_path = p.abspath(p.join(vim.eval("expand('<sfile>:p:h')"), "../lib"))
 sys.path.insert(0, base_path)
 
-import runner
+import flow
 
-def vim_runner_reload():
-  imp.reload(runner)
+def flow_reload():
+  imp.reload(flow)
 EOF
 
-" reload coad
-command! VimRunnerReload :python vim_runner_reload()
+" reload vim-flow
+command! Flow :python flow.run()
+command! FlowTest :python flow.test()
+" toggle lock on / off for current file
+command! FlowLock :python flow.lock()
+command! FlowReload :python flow_reload()
 
