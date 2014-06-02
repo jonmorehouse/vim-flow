@@ -1,11 +1,11 @@
 import flowtils as u
+import vim
 
 filenames = ["package.json"]
 
 def test(**kwargs):
+    u.close_tmux()
 
-    command = "jsonlint %s" % kwargs.get("filepath")
-    u.shell(command)
 
 def run(**kwargs):
 
