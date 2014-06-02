@@ -5,11 +5,11 @@ extension = ["sample_ext"]
 
 def test(**kwargs):
 
-    flowtils.vim_shell("make bash do something", clean = False)
+    flowtils.shell("make bash do something", clean = True)
 
 def run(**kwargs):
 
-    flowtils.tmux_shell("echo HERE && echo TEST")
+    flowtils.shell("echo HERE && echo TEST", clean = True)
 
 
 

@@ -2,8 +2,6 @@ import vim
 import os
 import flowtils
 
-variables = [("g:flow_use_tmux", False), ("g:flow_use_tmux", False), ("g:flow_tmux_session", True)]
-
 # set use_tmux
 use_tmux = flowtils.vim_variable("g:flow_use_tmux")
 if str(use_tmux) == "1":
@@ -21,8 +19,6 @@ if not tmux_pane:
     tmux_pane = int(stdout) + 1
 else:
     tmux_pane = int(tmux_pane)
-
-# set tmux window
 
 # set tmux_session
 tmux_session = flowtils.vim_variable("g:flow_tmux_session")

@@ -19,7 +19,6 @@ def git_basepath(filepath):
         return stdout, True
     return filedir, False
 
-
 def get_path_attributes(filepath): 
 
     global attr_cache 
@@ -45,12 +44,12 @@ def get_path_attributes(filepath):
     return attr
 
 # run with the correct defaults
-def shell(command):
+def shell(command, **kwargs):
 
     if flowconfig.use_tmux:
-        tmux_shell(command)
+        tmux_shell(command, **kwargs)
     else:
-        vim_shell(command)
+        vim_shell(command, **kwargs)
 
 def python_shell(command):
 
@@ -59,17 +58,22 @@ def python_shell(command):
     stdout, stderr = output.communicate()
     return stderr, stdout
 
-def vim_shell(command):
+def vim_shell(command, **kwargs):
 
+    if kwargs.get("clean"):
+        command = "printf \"\033c\" && %s" % command
     vim.command("! %s" % command)
 
-def tmux_shell(command):
+def tmux_shell(command, retry_allowed = True):
 
     # tmux send -t session.0 (just assume window 0) for now
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
     full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, command)
     stderr, stdout = python_shell(full_command) 
-    if stderr:
+    if stderr and retry_allowed:
+        python_shell("tmux split-window -hd")
+        tmux_shell(command, False)
+    elif stderr:
         print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (flowconfig.tmux_session, flowconfig.tmux_pane)
 
 # get the value of a vim variable if it exists
