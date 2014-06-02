@@ -7,7 +7,7 @@ extensions = ["coffee"]
 def run(**kwargs):
 
     # write all vim buffers - force write, and then open the current path again
-    vim.command(":bufdo :w | :b %s" % kwargs.get("filepath"))
+    vim.command(":wall")
     if u.has_file(kwargs, "Cakefile"):
         command = "cake test"
     else:

@@ -28,5 +28,3 @@ let g:flow_tmux_pane = 2
 
 
 
-
-

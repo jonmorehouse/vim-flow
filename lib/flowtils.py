@@ -61,14 +61,14 @@ def python_shell(command):
 
 def vim_shell(command, **kwargs):
 
-    if kwargs.get("clean"):
+    if kwargs.get("clean") and kwargs.get("clean") is True or flowconfig.clean:
         command = "printf \"\033c\" && %s" % command
     vim.command("! %s" % command)
 
 def tmux_shell(command, retry_allowed = True, **kwargs):
 
     # make sure clean is not requested
-    if kwargs.get("clean"):
+    if kwargs.get("clean") and kwargs.get("clean") is True or flowconfig.clean:
         command = "clear && %s" % command
 
     # tmux send -t session.0 (just assume window 0) for now

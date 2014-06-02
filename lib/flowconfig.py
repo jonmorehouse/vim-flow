@@ -2,6 +2,13 @@ import vim
 import os
 import flowtils
 
+# clean
+clean = flowtils.vim_variable("g:flow_clean")
+if str(clean) == "1" or str(clean) == "true":
+    clean = True
+else:
+    clean = False
+
 # set use_tmux
 use_tmux = flowtils.vim_variable("g:flow_use_tmux")
 if str(use_tmux) == "1":
@@ -28,4 +35,6 @@ if not tmux_session:
     if stderr:
         use_tmux = False
     tmux_session = stdout.strip()
+
+
 
