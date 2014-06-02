@@ -36,6 +36,7 @@ def get_path_attributes(filepath):
     attr["basepath"] = basepath # base directory
     attr["filename"] = basename 
     attr["basename"] = basename
+    attr["directory_name"] = basepath.split("/")[-1]
     attr["relative_filepath"] = re.sub(r'^/', "", filepath.replace(basepath, ""))
     attr["git"] = git
     attr["repo"] = False # functionality added later
