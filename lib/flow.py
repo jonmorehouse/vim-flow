@@ -9,11 +9,25 @@ import flowconfig
 
 filelock = None
 
-def run():
-    _run("run")
+def run(method = "run"):
 
-def test():
-    _run("test")
+    # make sure to normalize, as <n-args> passes an empty string if no args
+    if not method:
+        method = "run"
+
+    # generate file information to be passed around as kwargs
+    filepath = _get_file_path()
+    attrs = flowtils.get_path_attributes(filepath)
+
+    # find the correct module 
+    module = _get_module(attrs.get("filename"), attrs.get("extension"))
+
+    if not module or not hasattr(module, method):
+        print "No %s method available for this filepath" % method
+        return
+
+    # call method
+    getattr(module, method)(**attrs)
 
 def lock():
     
@@ -38,21 +52,6 @@ def toggle_tmux():
         flowconfig.use_tmux = True
         print "Using tmux"
 
-def _run(method = "run"):
-
-    # generate file information to be passed around as kwargs
-    filepath = _get_file_path()
-    attrs = flowtils.get_path_attributes(filepath)
-
-    # find the correct module 
-    module = _get_module(attrs.get("filename"), attrs.get("extension"))
-
-    if not module or not hasattr(module, method):
-        print "No %s method available for this filepath" % method
-        return
-
-    # call method
-    getattr(module, method)(**attrs)
     
 def _get_file_path():
 
