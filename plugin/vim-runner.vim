@@ -20,16 +20,16 @@ base_path = p.abspath(p.join(vim.eval("expand('<sfile>:p:h')"), "../lib"))
 sys.path.insert(0, base_path)
 
 import flow
-
-def flow_reload():
-  imp.reload(flow)
 EOF
 
 " reload vim-flow
 command! Flow :python flow.run()
-command! FlowTest :python flow.test()
+" this should be changed to alt
+"command! FlowTest :python flow.run("alt")
 " toggle lock on / off for current file
 command! FlowLock :python flow.lock()
-command! FlowReload :python flow_reload()
+" pass a command directly to the tmux windo
 command! -nargs=1 FlowMux python flow.tmux('<args>')
+" toggle whether or not to use tmux
+command! FlowMuxToggle :python flow.toggle_tmux()
 

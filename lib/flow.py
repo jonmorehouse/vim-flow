@@ -1,10 +1,11 @@
 import vim
-import flowtils
 import os
 import imp
 import glob
 import modules
 import re
+import flowtils
+import flowconfig
 
 filelock = None
 
@@ -27,6 +28,15 @@ def lock():
 def tmux(command):
 
     flowtils.tmux_shell(command)
+
+def toggle_tmux():
+
+    if flowconfig.use_tmux:
+        flowconfig.use_tmux = False
+        print "Not using tmux"
+    else:
+        flowconfig.use_tmux = True
+        print "Using tmux"
 
 def _run(method = "run"):
 
