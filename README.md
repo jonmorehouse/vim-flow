@@ -13,6 +13,20 @@ call vundle#rc()
 Plugin 'jonmorehouse/vim-flow'
 ~~~
 
+## Configuration
+
+Send commands to tmux instead of executing from within vim
+~~~ vim
+let g:flow_tmux = 1
+~~~
+
+By default, tmux commands will run in a split window in the current tmux session. You can optionally specify a different pane or session to send commands to.
+~~~ vim
+let g:flow_tmux_session = "some_session_name"
+let g:flow_tmux_pane = 2
+~~~
+
+
 
 
 

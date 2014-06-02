@@ -47,7 +47,10 @@ def get_path_attributes(filepath):
 # run with the correct defaults
 def shell(command):
 
-    pass
+    if flowconfig.use_tmux:
+        tmux_shell(command)
+    else:
+        vim_shell(command)
 
 def python_shell(command):
 
@@ -62,10 +65,14 @@ def vim_shell(command):
 
 def tmux_shell(command):
 
-    print "needs implementation"
-    pass 
+    # tmux send -t session.0 (just assume window 0) for now
+    # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
+    full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, command)
+    stderr, stdout = python_shell(full_command) 
+    if stderr:
+        print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (flowconfig.tmux_session, flowconfig.tmux_pane)
 
-# 
+# get the value of a vim variable if it exists
 def vim_variable(name):
 
     if int(vim.eval("exists(\"%s\")" % name)):

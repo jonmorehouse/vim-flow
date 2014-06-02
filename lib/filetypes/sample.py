@@ -1,6 +1,6 @@
 import flowtils
 
-filenames = ["sample_file"]
+filenames = ["Cakefile"]
 extension = ["sample_ext"]
 
 def test(**kwargs):
@@ -9,6 +9,9 @@ def test(**kwargs):
 
 def run(**kwargs):
 
-    flowtils.vim_shell("")
-    
+    flowtils.tmux_shell("echo HERE && echo TEST")
+
+
+
+
 
