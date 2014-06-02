@@ -3,9 +3,12 @@ import vim
 
 filenames = ["package.json"]
 
-def test(**kwargs):
-    u.close_tmux()
+def install(**kwargs):
 
+    vim.command("let package=input(\"Enter package name: \")")
+    package = vim.eval("package")
+    command = "npm install %s" % package
+    u.shell(command)
 
 def run(**kwargs):
 
