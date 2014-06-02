@@ -13,20 +13,12 @@ def git_basepath(filepath):
     filedir = os.path.dirname(filepath) 
     # should return the basepath of the currently executing file
     command = "cd %s && git rev-parse --show-toplevel" % filedir
-
-    # run the command and grab stderr/stdout to check if git repo or not
-    output = s.Popen(command, shell=True, stdout=s.PIPE, stderr=s.PIPE)
-    stdout, stderr = output.communicate()
-
+    stderr, stdout = python_shell(command)
     # return true and gitdir if its a git repo!
     if stdout: 
         return stdout, True
     return filedir, False
 
-def run_command(command_string, clean = True):
-
-    # generate shell command and run from within vim
-    pass
 
 def get_path_attributes(filepath): 
 
@@ -52,6 +44,17 @@ def get_path_attributes(filepath):
 
     return attr
 
+# run with the correct defaults
+def shell(command):
+
+    pass
+
+def python_shell(command):
+
+    # run the command and grab stderr/stdout to check if git repo or not
+    output = s.Popen(command, shell=True, stdout=s.PIPE, stderr=s.PIPE)
+    stdout, stderr = output.communicate()
+    return stderr, stdout
 
 def vim_shell(command):
 
@@ -62,4 +65,12 @@ def tmux_shell(command):
     print "needs implementation"
     pass 
 
+# 
+def vim_variable(name):
 
+    if int(vim.eval("exists(\"%s\")" % name)):
+        return vim.eval(name)
+
+    return False
+
+import flowconfig
