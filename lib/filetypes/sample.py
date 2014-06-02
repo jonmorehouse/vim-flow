@@ -1,7 +1,7 @@
 import flowtils
 
 filenames = ["sample_filename"]
-extension = ["sample_ext"]
+extensions = ["sample_ext"]
 
 def test(**kwargs):
 

@@ -17,7 +17,7 @@ def git_basepath(filepath):
     stderr, stdout = python_shell(command)
     # return true and gitdir if its a git repo!
     if stdout: 
-        return stdout, True
+        return stdout.strip(), True
     return filedir, False
 
 def get_path_attributes(filepath): 
@@ -28,7 +28,7 @@ def get_path_attributes(filepath):
 
     basepath, git = git_basepath(filepath)
     basename = os.path.basename(filepath)
-    extension = os.path.splitext(basename)[1]
+    extension = os.path.splitext(basename)[1].lstrip(".")
     
     # return file attributes here
     attr = {}
@@ -88,5 +88,15 @@ def vim_variable(name):
         return vim.eval(name)
 
     return False
+
+# whether or not a project has a file
+def has_file(basepath, filename):
+
+    if type(basepath) == dict:
+        basepath = basepath.get("basepath")
+    if os.path.isfile(os.path.join(basepath, filename)):
+        return True
+    return False
+
 
 import flowconfig

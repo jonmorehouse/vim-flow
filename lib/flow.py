@@ -4,6 +4,7 @@ import os
 import imp
 import glob
 import modules
+import re
 
 filelock = None
 
@@ -34,7 +35,7 @@ def _run(method = "run"):
     module = _get_module(attrs.get("filename"), attrs.get("extension"))
 
     if not module or not hasattr(module, method):
-        print "No module available for this filepath"
+        print "No %s method available for this filepath" % method
         return
 
     # call method
@@ -49,13 +50,14 @@ def _get_file_path():
 
 def _get_module(filename, extension):
 
+    print filename
     # check all modules
     for module_name, module in modules.modules().iteritems():
         # check against extension
-        if extension and extension in module.extensions:
+        if extension and hasattr(module, "extensions") and extension in module.extensions:
             return module
         # check if its a registered filename, for instance Gemfile or Rakefile (ruby)
-        if filename in module.filenames:
+        if hasattr(module, "filenames") and filename in module.filenames:
             return module
 
     return None
