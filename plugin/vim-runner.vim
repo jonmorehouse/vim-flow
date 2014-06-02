@@ -25,11 +25,11 @@ EOF
 " reload vim-flow
 command! Flow :python flow.run()
 " this should be changed to alt
-"command! FlowTest :python flow.run("alt")
+"command! FlowAlt :python flow.run("alt")
 " toggle lock on / off for current file
 command! FlowLock :python flow.lock()
 " pass a command directly to the tmux windo
 command! -nargs=1 FlowMux python flow.tmux('<args>')
 " toggle whether or not to use tmux
-command! FlowMuxToggle :python flow.toggle_tmux()
+command! FlowToggleTmux :python flow.toggle_tmux()
 

@@ -36,5 +36,8 @@ if not tmux_session:
         use_tmux = False
     tmux_session = stdout.strip()
 
+# set additional flow directory - this is for custom functionality
+flow_path = flowtils.vim_variable("g:flow_path")
+
 
 

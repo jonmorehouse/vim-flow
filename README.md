@@ -22,8 +22,17 @@ Vim-Flow is a highly configureable framework that allows you to execute any file
 " execute the current file or project
 :Flow
 
-" test the current file or project
-:FlowTest
+" run alt command for this module
+:FlowAlt
+
+" run a command in the tmux window
+:FlowMux
+
+" lock/unlock a file, so you can edit other files while still running flows on this file
+:FlowLock
+
+" toggle whether or not to run flow commands in tmux or from within vim
+:FlowToggleTmux
 
 ~~~
 
@@ -47,4 +56,10 @@ By default, tmux commands will run in a split window in the current tmux session
 let g:flow_tmux_session = "some_session_name"
 let g:flow_tmux_pane = 2
 ~~~
+
+Some power users may want to build their own flows to override the built in ones. By specifying a `g:flow_path` you can add a directory of your own flows.
+~~~ vim
+let g:flow_path = $HOME."/.flows"
+~~~
+
 
