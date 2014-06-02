@@ -35,9 +35,6 @@ Vim-Flow is a highly configureable framework that allows you to execute any file
 :FlowToggleTmux
 ~~~
 
-For now, to add custom functionality, fork the project and add new python files in the lib/filetypes directory.
-
-
 ## Configuration
 
 Prefix all commands with clear
