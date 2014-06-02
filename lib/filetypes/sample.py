@@ -1,15 +1,15 @@
 import flowtils
 
-filenames = ["Cakefile"]
+filenames = ["sample_filename"]
 extension = ["sample_ext"]
 
 def test(**kwargs):
 
-    flowtils.shell("make bash do something", clean = True)
+    flowtils.shell("echo TEST", clean = True)
 
 def run(**kwargs):
 
-    flowtils.shell("echo HERE && echo TEST", clean = True)
+    flowtils.shell("echo RUN", clean = True)
 
 
 

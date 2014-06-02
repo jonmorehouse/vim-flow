@@ -1,5 +1,6 @@
 import os
 import subprocess as s
+import re
 
 try:
     import vim
@@ -35,7 +36,7 @@ def get_path_attributes(filepath):
     attr["basepath"] = basepath # base directory
     attr["filename"] = basename 
     attr["basename"] = basename
-    attr["relative_filepath"] = filepath.replace(basepath, "")
+    attr["relative_filepath"] = re.sub(r'^/', "", filepath.replace(basepath, ""))
     attr["git"] = git
     attr["repo"] = False # functionality added later
     attr["ext"] = extension if extension else False
