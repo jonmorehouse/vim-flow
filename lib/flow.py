@@ -50,7 +50,6 @@ def _get_file_path():
 
 def _get_module(filename, extension):
 
-    print filename
     # check all modules
     for module_name, module in modules.modules().iteritems():
         # check against extension
