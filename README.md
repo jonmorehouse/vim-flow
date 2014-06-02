@@ -15,9 +15,14 @@ Plugin 'jonmorehouse/vim-flow'
 
 ## Configuration
 
+Prefix all commands with clear
+~~~ vim
+let g:flow_clean = 1
+~~~
+
 Send commands to tmux instead of executing from within vim
 ~~~ vim
-let g:flow_tmux = 1
+let g:flow_use_tmux = 1
 ~~~
 
 By default, tmux commands will run in a split window in the current tmux session. You can optionally specify a different pane or session to send commands to.
@@ -25,6 +30,5 @@ By default, tmux commands will run in a split window in the current tmux session
 let g:flow_tmux_session = "some_session_name"
 let g:flow_tmux_pane = 2
 ~~~
-
 
 
