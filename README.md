@@ -31,4 +31,3 @@ let g:flow_tmux_session = "some_session_name"
 let g:flow_tmux_pane = 2
 ~~~
 
-
