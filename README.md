@@ -13,6 +13,16 @@ call vundle#rc()
 Plugin 'jonmorehouse/vim-flow'
 ~~~
 
+## Dependencies
+
+This plugin has a lot of dependencies, based upon the projects you are running. For most cases, you're dependencies will installed already, if not check out the corresponding flow for that filetype. 
+
+That being said, there are a few dependencies specifically designed for flow.
+~~~ bash
+# github markdown preview server
+$ pip install grip 
+~~~
+
 ## Usage
 
 Vim-Flow is a highly configureable framework that allows you to execute any file you happen to be editing with one command. As this project matures, more filetypes will be supported.
