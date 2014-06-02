@@ -103,5 +103,10 @@ def has_file(basepath, filename):
         return True
     return False
 
+def close_tmux():
+
+    python_shell("tmux kill-pane -t %s.%s" % (flowconfig.tmux_session, flowconfig.tmux_pane))
+    vim.command("call feedkeys(\"\<C-W>H\")")
+
 
 import flowconfig
