@@ -64,7 +64,11 @@ def vim_shell(command, **kwargs):
         command = "printf \"\033c\" && %s" % command
     vim.command("! %s" % command)
 
-def tmux_shell(command, retry_allowed = True):
+def tmux_shell(command, retry_allowed = True, **kwargs):
+
+    # make sure clean is not requested
+    if kwargs.get("clean"):
+        command = "clear && %s" % command
 
     # tmux send -t session.0 (just assume window 0) for now
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
