@@ -58,4 +58,8 @@ Some power users may want to build their own flows to override the built in ones
 let g:flow_path = $HOME."/.flows"
 ~~~
 
+## Hacking
+
+Contributions welcome. There's an endless amount of flows to be built out, from cucumber flows to docker flows. I'll be implementing them as I come across them in my own work. Open issues and fork away!
+
 
