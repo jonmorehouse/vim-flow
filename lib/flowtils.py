@@ -53,3 +53,13 @@ def get_path_attributes(filepath):
     return attr
 
 
+def vim_shell(command):
+
+    vim.command("! %s" % command)
+
+def tmux_shell(command):
+
+    print "needs implementation"
+    pass 
+
+

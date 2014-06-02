@@ -18,7 +18,7 @@ def modules():
         module_name = os.path.splitext(os.path.basename(filepath))[0]
 
         # now check to see if it needs to be loaded
-        if not cache.get(module_name) or ignore_cached:
+        if not cache.get(module_name) or ignore_cache:
             cache[module_name] = imp.load_source(module_name, filepath)
 
     # now return the module_cache (dicts are passed by reference)

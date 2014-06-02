@@ -1,5 +1,5 @@
 import vim
-import utils
+import flowtils
 import os
 import imp
 import glob
@@ -28,7 +28,7 @@ def _run(method = "run"):
 
     # generate file information to be passed around as kwargs
     filepath = _get_file_path()
-    attrs = utils.get_path_attributes(filepath)
+    attrs = flowtils.get_path_attributes(filepath)
 
     # find the correct module 
     module = _get_module(attrs.get("filename"), attrs.get("extension"))
