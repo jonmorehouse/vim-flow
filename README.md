@@ -13,6 +13,23 @@ call vundle#rc()
 Plugin 'jonmorehouse/vim-flow'
 ~~~
 
+## Usage
+
+Vim-Flow is a highly configureable framework that allows you to execute any file you happen to be editing with one command. As this project matures, more filetypes will be supported.
+
+~~~ vim
+
+" execute the current file or project
+:Flow
+
+" test the current file or project
+:FlowTest
+
+~~~
+
+For now, to add custom functionality, fork the project and add new python files in the lib/filetypes directory.
+
+
 ## Configuration
 
 Prefix all commands with clear

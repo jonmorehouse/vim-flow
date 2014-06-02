@@ -22,7 +22,7 @@ def lock():
         print "File locked"
     else:
         filelock = None
-        print "File unlocked"
+        print "File lock released"
 
 
 def _run(method = "run"):
