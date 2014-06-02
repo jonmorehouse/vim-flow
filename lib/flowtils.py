@@ -75,8 +75,13 @@ def tmux_shell(command, retry_allowed = True, **kwargs):
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
     full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, command)
     stderr, stdout = python_shell(full_command) 
+
+    # if stderr, there was most likely no tmux window available. Try to create one
     if stderr and retry_allowed:
-        python_shell("tmux split-window -hd")
+        stderr, stdout = python_shell("tmux split-window -hd")
+        # normalize windows in case there was a vertical split, switch to a horizontal split
+        if not stderr:
+            vim.command("call feedkeys(\"\<C-W>K\")")
         tmux_shell(command, False)
     elif stderr:
         print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (flowconfig.tmux_session, flowconfig.tmux_pane)

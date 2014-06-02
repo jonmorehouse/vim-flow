@@ -10,6 +10,6 @@ def test(**kwargs):
 def run(**kwargs):
 
     command = "cd %s && npm install" % kwargs.get("basepath")
-    u.shell(command)
-
+    # always open in tmux shell
+    u.tmux_shell(command)
 

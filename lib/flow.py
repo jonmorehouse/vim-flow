@@ -24,6 +24,9 @@ def lock():
         filelock = None
         print "File lock released"
 
+def tmux(command):
+
+    flowtils.tmux_shell(command)
 
 def _run(method = "run"):
 

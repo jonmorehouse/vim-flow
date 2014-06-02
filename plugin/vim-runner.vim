@@ -31,4 +31,5 @@ command! FlowTest :python flow.test()
 " toggle lock on / off for current file
 command! FlowLock :python flow.lock()
 command! FlowReload :python flow_reload()
+command! -nargs=1 FlowMux python flow.tmux('<args>')
 
