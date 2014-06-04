@@ -23,7 +23,10 @@ if not tmux_pane:
     stderr, stdout = flowtils.python_shell("tmux display-message -p \"#P\"")
     if stderr:
         use_tmux = False
-    tmux_pane = int(stdout) + 1
+    try:
+        tmux_pane = int(stdout) + 1
+    except e:
+        use_tmux = False
 else:
     tmux_pane = int(tmux_pane)
 
