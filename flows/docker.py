@@ -9,7 +9,7 @@ filenames = ["Dockerfile", "Dockerfile"]
 # shell into the docker box
 def alt(**kw):
 
-    command = "docker run -i -t --entrypoint=/bin/bash %s -s" % kw.get("directory_name")
+    command = "docker run -i -t --entrypoint=/bin/bash %s" % kw.get("directory_name")
     u.shell(command)
 
 # build docker file by default

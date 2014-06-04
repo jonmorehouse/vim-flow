@@ -20,7 +20,7 @@ def run(method = "run"):
     attrs = flowtils.get_path_attributes(filepath)
 
     # find the correct module 
-    module = _get_module(attrs.get("filename"), attrs.get("extension"))
+    module = _get_module(**attrs)
 
     if not module or not hasattr(module, method):
         print "No %s method available for this filepath" % method
@@ -60,16 +60,23 @@ def _get_file_path():
         return filelock
     return vim.current.buffer.name
 
-def _get_module(filename, extension):
 
+# **kwargs is a hash from flowtils.get_path_attributes
+def _get_module(**kw):
+
+    flows = modules.modules()
     # check all modules
-    for module_name, module in modules.modules().iteritems():
+    for module_name, module in flows.iteritems():
         # check against extension
-        if extension and hasattr(module, "extensions") and extension in module.extensions:
+        if kw.get("extension") and hasattr(module, "extensions") and kw.get("extension") in module.extensions:
             return module
         # check if its a registered filename, for instance Gemfile or Rakefile (ruby)
-        if hasattr(module, "filenames") and filename in module.filenames:
+        if hasattr(module, "filenames") and kw.get("filename") in module.filenames:
             return module
+
+    # no module available, call the shell module
+    if flows.get("shell").has_shebang(kw.get("filepath")):
+        return flows.get("shell")
 
     return None
 
