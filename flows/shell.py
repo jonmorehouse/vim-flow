@@ -5,6 +5,10 @@ from stat import *
 
 def has_shebang(filepath):
     
+    # directories don't have shebangs :)
+    if os.path.isdir(filepath):
+        return False
+
     with open(filepath, 'r') as f:
         first_line = f.readline()
 
