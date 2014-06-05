@@ -1,8 +1,6 @@
 import flowtils as u
 import vim
 
-print "flow loaded"
-
 extensions = ["py"]
 
 def run(**kwargs):
