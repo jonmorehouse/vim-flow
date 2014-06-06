@@ -11,7 +11,7 @@ def run(**kw):
     vim.command(":wall")
 
     if re.match(r'.*_spec.coffee$', kw.get("filepath")):
-        command="cd %s && jasmine-node --coffee %s" % (kw.get("basepath"), kw.get("filepath"))
+        command="cd %s && jasmine-node --coffee --verbose %s" % (kw.get("basepath"), kw.get("filepath"))
     elif u.has_file(kw, "Cakefile"):
         command = "cake test"
     else:
