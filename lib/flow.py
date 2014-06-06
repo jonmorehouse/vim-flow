@@ -57,6 +57,15 @@ def _get_file_path():
 def _get_module(**kw):
 
     flows = modules.modules()
+
+    # you can override the command in any file
+    if flows.get("command").has_command(**kw):
+        return flows.get("command")
+
+    # check for flowfile
+    if flows.get("flowfile").has_flowfile(**kw):
+        return flows.get("flowfile")
+
     # check all modules
     for module_name, module in flows.iteritems():
         # check against extension
@@ -65,10 +74,10 @@ def _get_module(**kw):
         # check if its a registered filename, for instance Gemfile or Rakefile (ruby)
         if hasattr(module, "filenames") and kw.get("filename") in module.filenames:
             return module
-
+    
     # no module available, call the shell module
-    if flows.get("shell").has_shebang(kw.get("filepath")):
-        return flows.get("shell")
+    if flows.get("anonymous").has_shebang(kw.get("filepath")):
+        return flows.get("anonymous")
 
     return None
 

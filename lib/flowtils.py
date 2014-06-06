@@ -10,8 +10,9 @@ except:
 attr_cache = {}
 
 # check whether or not to force use vim / tmux etc
-def get_flags(filepath):
+def get_flags(**kw):
 
+    filepath = kw.get("filepath")
     flags = {}
     with open(filepath, "r") as f:
 
@@ -66,7 +67,7 @@ def shell(command, **kw):
 
     flags = {}
     if kw.get("filepath"):
-        flags = get_flags(kw.get("filepath"))
+        flags = get_flags(**kw)
 
     # initialize runtime
     if flags.get("runtime"):
@@ -75,6 +76,12 @@ def shell(command, **kw):
         runtime = kw.get("runtime")
     else:
         runtime = flowconfig.runtime
+    
+    # add in suffix/prefixes for the command
+    if flags.get("suffix"):
+        command = "%s && %s" % (command, flags.get("suffix"))
+    if flags.get("prefix"):
+        command = "%s && %s" % (flags.get("prefix"), command)
 
     # now call correct runtime functions
     if runtime == "tmux":
