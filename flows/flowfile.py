@@ -1,18 +1,22 @@
 import os
+import flowtils as u
 
-def has_flowfile(**kw):
+def has_command(**kw):
 
-    print "HERE"
-    print kw.get("basepath")
+    flowfile = u.get_flowfile(**kw)
+    if not flowfile:
+        return False
 
+    # grab flags from file
+    flags = u.get_flags(**flowfile)
+
+    if flags.get("command"):
+        return True
     return False
-
-
 
 def run(**kw):
 
-    print "RUNNING FLOW FILE"
-    pass
-
+    flags = u.get_flags(**u.get_flowfile(**kw))
+    u.shell(flags.get("command"), **kw)
 
 

@@ -1,6 +1,7 @@
 import os
 import subprocess as s
 import re
+import glob
 
 try:
     import vim
@@ -62,6 +63,30 @@ def get_path_attributes(filepath):
 
     return attr
 
+def modify_command_with_hooks(command, **kw):
+
+    flags_list = [get_flags(**kw)]
+    flowfile = get_flowfile(**kw)
+    setup = teardown = None
+
+    if flowfile:
+        flags_list.append(get_flags(**flowfile))
+
+    # grab the flags and set teardown/setup properly
+    for flags in flags_list:
+        if flags.get("setup"):
+            setup = flags.get("setup")
+        if flags.get("teardown"):
+            teardown = flags.get("teardown")
+
+    # add in suffix/prefixes for the command
+    if setup:
+        command = "%s && %s" % (setup, command)
+    if teardown:
+        command = "%s && %s" % (command, teardown)
+
+    return command
+
 # run with the correct defaults
 def shell(command, **kw):
 
@@ -77,12 +102,9 @@ def shell(command, **kw):
     else:
         runtime = flowconfig.runtime
     
-    # add in suffix/prefixes for the command
-    if flags.get("suffix"):
-        command = "%s && %s" % (command, flags.get("suffix"))
-    if flags.get("prefix"):
-        command = "%s && %s" % (flags.get("prefix"), command)
-
+    # add setup/teardown methods to command
+    command = modify_command_with_hooks(command, **kw)
+     
     # now call correct runtime functions
     if runtime == "tmux":
         tmux_shell(command, **kw)
@@ -155,6 +177,19 @@ def escape_command(command):
         command = re.sub(r"\$", "\\$", command)
 
     return command
+
+def vim_echo(msg):
+
+    vim.command("! echo %s" % msg)
+
+def get_flowfile(**kw):
+
+    os.chdir(kw.get("basepath"))
+    files = glob.glob(".flowfile")
+    if len(files) < 1: 
+        return False
+
+    return get_path_attributes(files[-1])
 
 
 import flowconfig

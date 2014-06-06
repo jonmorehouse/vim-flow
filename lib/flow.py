@@ -63,7 +63,7 @@ def _get_module(**kw):
         return flows.get("command")
 
     # check for flowfile
-    if flows.get("flowfile").has_flowfile(**kw):
+    if flows.get("flowfile").has_command(**kw):
         return flows.get("flowfile")
 
     # check all modules
