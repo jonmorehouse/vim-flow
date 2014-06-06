@@ -3,16 +3,16 @@ import vim
 
 filenames = ["package.json"]
 
-def install(**kwargs):
+def install(**kw):
 
     vim.command("let package=input(\"Enter package name: \")")
     package = vim.eval("package")
     command = "npm install %s" % package
-    u.shell(command)
+    u.shell(command, **kw)
 
-def run(**kwargs):
+def run(**kw):
 
-    command = "cd %s && npm install" % kwargs.get("basepath")
+    command = "cd %s && npm install" % kw.get("basepath")
     # always open in tmux shell
-    u.tmux_shell(command)
+    u.tmux_shell(command, **kw)
 

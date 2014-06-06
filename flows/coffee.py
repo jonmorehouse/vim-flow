@@ -5,18 +5,18 @@ import re
 filenames = ["Cakefile"]
 extensions = ["coffee"]
 
-def run(**kwargs):
+def run(**kw):
 
     # write all vim buffers - force write, and then open the current path again
     vim.command(":wall")
 
-    if re.match(r'.*_spec.coffee$', kwargs.get("filepath")):
-        command="cd %s && jasmine-node --coffee %s" % (kwargs.get("basepath"), kwargs.get("filepath"))
-    elif u.has_file(kwargs, "Cakefile"):
+    if re.match(r'.*_spec.coffee$', kw.get("filepath")):
+        command="cd %s && jasmine-node --coffee %s" % (kw.get("basepath"), kw.get("filepath"))
+    elif u.has_file(kw, "Cakefile"):
         command = "cake test"
     else:
-        command = "coffee %s" % kwargs.get("filepath")
+        command = "coffee %s" % kw.get("filepath")
 
     # run the command in the shell with the given user preferences
-    u.shell(command)
+    u.shell(command, **kw)
 
