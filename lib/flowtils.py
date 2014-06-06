@@ -147,7 +147,6 @@ def escape_command(command):
     for char in chars:
         command = re.sub(r"\$", "\\$", command)
 
-    print command
     return command
 
 
