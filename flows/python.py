@@ -3,14 +3,14 @@ import vim
 
 extensions = ["py"]
 
-def run(**kwargs):
+def run(**kw):
 
     vim.command(":wall") 
     
-    if u.has_file(kwargs, "Fabfile.py"):
-        command = "cd %s && fab test" % kwargs.get("basepath")
+    if u.has_file(kw, "Fabfile.py"):
+        command = "cd %s && fab test" % kw.get("basepath")
     else:
-        command = "python %s" % kwargs.get("filepath")
+        command = "python %s" % kw.get("filepath")
 
-    u.shell(command)
+    u.shell(command, **kw)
 

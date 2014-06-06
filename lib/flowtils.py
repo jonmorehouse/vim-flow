@@ -9,6 +9,22 @@ except:
 
 attr_cache = {}
 
+# check whether or not to force use vim / tmux etc
+def get_flags(filepath):
+
+    flags = {}
+    with open(filepath, "r") as f:
+
+        for line in f.readlines():
+
+            mg = re.match("^#flow-(?P<flag>.*): (?P<value>.*)$", line)
+            if not mg:
+                continue
+            # possibly do some other stuff
+            flags[mg.group("flag")] = mg.group("value")
+
+    return flags
+
 def git_basepath(filepath): 
 
     filedir = os.path.dirname(filepath) 
@@ -46,14 +62,29 @@ def get_path_attributes(filepath):
     return attr
 
 # run with the correct defaults
-def shell(command, **kwargs):
+def shell(command, **kw):
 
-    if flowconfig.use_tmux:
-        tmux_shell(command, **kwargs)
+    flags = {}
+    if kw.get("filepath"):
+        flags = get_flags(kw.get("filepath"))
+
+    # initialize runtime
+    if flags.get("runtime"):
+        runtime = flags.get("runtime")
+    elif kw.get("runtime"):
+        runtime = kw.get("runtime")
     else:
-        vim_shell(command, **kwargs)
+        runtime = flowconfig.runtime
 
-def python_shell(command):
+    # now call correct runtime functions
+    if runtime == "tmux":
+        tmux_shell(command, **kw)
+    elif runtime == "python":
+        python_shell(command, **kw)
+    else:
+        vim_shell(command, **kw)
+
+def python_shell(command, **kw):
 
     # run the command and grab stderr/stdout to check if git repo or not
     output = s.Popen(command, shell=True, stdout=s.PIPE, stderr=s.PIPE)
@@ -74,7 +105,7 @@ def tmux_shell(command, retry_allowed = True, **kwargs):
 
     # tmux send -t session.0 (just assume window 0) for now
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
-    full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, command)
+    full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, escape_command(command))
     stderr, stdout = python_shell(full_command) 
 
     # if stderr, there was most likely no tmux window available. Try to create one
@@ -108,6 +139,16 @@ def close_tmux():
 
     python_shell("tmux kill-pane -t %s.%s" % (flowconfig.tmux_session, flowconfig.tmux_pane))
     vim.command("call feedkeys(\"\<C-W>H\")")
+
+def escape_command(command):
+
+    chars = ["$"]
+
+    for char in chars:
+        command = re.sub(r"\$", "\\$", command)
+
+    print command
+    return command
 
 
 import flowconfig

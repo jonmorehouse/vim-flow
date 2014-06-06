@@ -11,6 +11,9 @@ filelock = None
 
 def run(method = "run"):
 
+    # update flow configuration
+    flowconfig.update()
+
     # make sure to normalize, as <n-args> passes an empty string if no args
     if not method:
         method = "run"
@@ -43,23 +46,12 @@ def tmux(command):
 
     flowtils.tmux_shell(command)
 
-def toggle_tmux():
-
-    if flowconfig.use_tmux:
-        flowconfig.use_tmux = False
-        print "Not using tmux"
-    else:
-        flowconfig.use_tmux = True
-        print "Using tmux"
-
-    
 def _get_file_path():
 
     global filelock
     if filelock:
         return filelock
     return vim.current.buffer.name
-
 
 # **kwargs is a hash from flowtils.get_path_attributes
 def _get_module(**kw):
