@@ -15,6 +15,10 @@ def get_flags(**kw):
 
     filepath = kw.get("filepath")
     flags = {}
+
+    if os.path.isdir(filepath):
+        return flags
+
     with open(filepath, "r") as f:
 
         for line in f.readlines():
