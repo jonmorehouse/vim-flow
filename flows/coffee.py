@@ -11,9 +11,9 @@ def run(**kw):
     vim.command(":wall")
 
     if re.match(r'.*_spec.coffee$', kw.get("filepath")):
-        command="cd %s && cake test %s" % kw.get("filepath")
+        command="cd %s && cake -p %s test" % (kw.get("basepath"), kw.get("filepath"))
     elif u.has_file(kw, "Cakefile"):
-        command = "cake test"
+        command = "cd %s && cake test" % kw.get("basepath")
     else:
         command = "coffee %s" % kw.get("filepath")
 
