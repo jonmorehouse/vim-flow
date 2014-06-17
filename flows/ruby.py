@@ -2,13 +2,13 @@ import flowtils as u
 import vim
 import re
 
-filenames = ["Rakefile", "Gemfile", "Gemfile.lock"]
+filenames = ["Rakefile"]
 extensions = ["rb"]
 
 def run(**kw):
 
     # run tests by default ... this shouldn't be that slow (hopefully)
-    u.shell("rake test", **kw)
+    u.shell("rake spec", **kw)
     
 def test(**kw):
 
