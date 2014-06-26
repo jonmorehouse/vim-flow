@@ -147,13 +147,13 @@ def tmux_shell(command, **kw):
 
     # if stderr, there was most likely no tmux window available. Try to create one
     if stderr and not "no_retry_allowed" in kw:
-        stderr, stdout = python_shell("tmux split-window -hd")
+        stderr, stdout = python_shell("tmux split-window -hd -t %s" % session)
         # normalize windows in case there was a vertical split, switch to a horizontal split
         if not stderr:
             vim.command("call feedkeys(\"\<C-W>K\")")
         tmux_shell(command, no_retry_allowed = False, **kw)
     elif stderr:
-        print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (flowconfig.tmux_session, flowconfig.tmux_pane)
+        print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (session, pane)
 
 # get the value of a vim variable if it exists
 def vim_variable(name):

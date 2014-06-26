@@ -5,11 +5,14 @@ import re
 filenames = ["Rakefile"]
 extensions = ["rb"]
 
+def rubymotion(command):
+
+    u.python_shell("tmux split-window -t rubymotion")
+    u.tmux_shell("tmux kill-pane -t 0 && %s " % command, session = "rubymotion", pane = 1)
 
 def run(**kw):
     if u.has_file(kw, ".rubymotion"):
-        u.tmux_shell("quit", clear = False, session = "rubymotion", pane = 0)
-        u.tmux_shell("bundle exec rake spec", clear = False, session = "rubymotion", pane = 0)
+        rubymotion("bundle exec rake")
         return
 
     if u.has_file(kw, "Rakefile"):
@@ -23,8 +26,7 @@ def run(**kw):
 def test(**kw):
 
     if u.has_file(kw, ".rubymotion"):
-        u.tmux_shell("quit", clear = False, session = "rubymotion", pane = 0)
-        u.tmux_shell("bundle exec rake", clear = False, session = "rubymotion", pane = 0)
+        rubymotion("bundle exec rake spec")
         return
 
     # run the applicatin in the simulator
