@@ -124,20 +124,21 @@ def python_shell(command, **kw):
     stdout, stderr = output.communicate()
     return stderr, stdout
 
-def vim_shell(command, **kwargs):
+def vim_shell(command, **kw):
 
-    if kwargs.get("clean") and kwargs.get("clean") is True or flowconfig.clean:
+    if kw.get("clean") and kw.get("clean") is True or flowconfig.clean:
         command = "printf \"\033c\" && %s" % command
     vim.command("! %s" % command)
 
-def tmux_shell(command, retry_allowed = True, **kwargs):
+def tmux_shell(command, **kw):
 
     # make sure clean is not requested
-    if not "clear" in kwargs.keys():
+    if not "clear" in kw.keys():
         command = "clear && %s" % command
 
     session = kw.get("session") if kw.get("session") else flowconfig.tmux_session
-    pane = kw.get("pane") if kw.get("pane") else flowconfig.tmux_pane
+    # pane can oftentimes be zero
+    pane = kw.get("pane") if "pane" in kw.keys() else flowconfig.tmux_pane
 
     # tmux send -t session.0 (just assume window 0) for now
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
@@ -145,12 +146,12 @@ def tmux_shell(command, retry_allowed = True, **kwargs):
     stderr, stdout = python_shell(full_command) 
 
     # if stderr, there was most likely no tmux window available. Try to create one
-    if stderr and retry_allowed:
+    if stderr and not "no_retry_allowed" in kw:
         stderr, stdout = python_shell("tmux split-window -hd")
         # normalize windows in case there was a vertical split, switch to a horizontal split
         if not stderr:
             vim.command("call feedkeys(\"\<C-W>K\")")
-        tmux_shell(command, False)
+        tmux_shell(command, no_retry_allowed = False, **kw)
     elif stderr:
         print "Unable to send command to tmux %s.%s. Please make sure this pane exists." % (flowconfig.tmux_session, flowconfig.tmux_pane)
 
