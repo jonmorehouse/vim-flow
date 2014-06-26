@@ -7,6 +7,9 @@ extensions = ["rb"]
 
 
 def run(**kw):
+    if u.has_file(kw, ".rubymotion"):
+        u.tmux_shell("quit && bundle exec rake spec", clear = False, session = "rubymotion", pane = 0)
+        return
 
     if u.has_file(kw, "Rakefile"):
         command = "bundle exec rake spec"
@@ -18,6 +21,10 @@ def run(**kw):
     
 def test(**kw):
 
+    if u.has_file(kw, ".rubymotion"):
+        u.tmux_shell("quit && bundle exec rake", clear = False, session = "rubymotion", pane = 0)
+        return
+
     # run the applicatin in the simulator
-    u.tmux_shell("bundle exec rake")
+    u.shell("bundle exec rake", **kw)
 

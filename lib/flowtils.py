@@ -133,12 +133,15 @@ def vim_shell(command, **kwargs):
 def tmux_shell(command, retry_allowed = True, **kwargs):
 
     # make sure clean is not requested
-    if kwargs.get("clean") and kwargs.get("clean") is True or flowconfig.clean:
+    if not "clear" in kwargs.keys():
         command = "clear && %s" % command
+
+    session = kw.get("session") if kw.get("session") else flowconfig.tmux_session
+    pane = kw.get("pane") if kw.get("pane") else flowconfig.tmux_pane
 
     # tmux send -t session.0 (just assume window 0) for now
     # window's don't really make sense here because you never would be able to see 2 different windows in a tmux session at once
-    full_command = "tmux send -t %s.%s \"%s\" ENTER" % (flowconfig.tmux_session, flowconfig.tmux_pane, escape_command(command))
+    full_command = "tmux send -t %s.%s \"%s\" ENTER" % (session, pane, escape_command(command))
     stderr, stdout = python_shell(full_command) 
 
     # if stderr, there was most likely no tmux window available. Try to create one
