@@ -7,8 +7,8 @@ extensions = ["rb"]
 
 def rubymotion(command):
 
-    u.python_shell("tmux split-window -t rubymotion")
-    u.tmux_shell("tmux kill-pane -t 0 && %s " % command, session = "rubymotion", pane = 1)
+    u.python_shell("tmux split-window -t temp")
+    u.tmux_shell("tmux kill-pane -t 0 && %s " % command, session = "temp", pane = 1)
 
 def run(**kw):
     if u.has_file(kw, ".rubymotion"):
