@@ -172,6 +172,10 @@ def has_file(basepath, filename):
         return True
     return False
 
+def base_filepath(name, **kw):
+
+    return os.path.join(kw.get("basepath"), name)
+
 def close_tmux():
 
     python_shell("tmux kill-pane -t %s.%s" % (flowconfig.tmux_session, flowconfig.tmux_pane))
