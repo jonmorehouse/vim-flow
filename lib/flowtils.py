@@ -216,5 +216,11 @@ def execute_project_file(**kw):
     if not contents: return False
     tmux_shell(contents, session = "temp", pane = 0)
     return True
+
+def basepath_command(command, **kw):
+    command = "cd %s; %s" % (kw.get("basepath"), command)
+    if kw.get("tmux"):
+        return tmux_shell(command, session="temp", pane=0)
+    return command
         
 import flowconfig
