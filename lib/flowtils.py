@@ -31,6 +31,14 @@ def get_flags(**kw):
 
     return flags
 
+def get_file(kw, filepath):
+
+    filepath = os.path.join(kw.get("basepath"), filepath)
+    if os.path.isfile(filepath):
+        with open(filepath) as f:
+            return f.read()
+    return False
+
 def git_basepath(filepath): 
 
     filedir = os.path.dirname(filepath) 
@@ -203,5 +211,10 @@ def get_flowfile(**kw):
 
     return get_path_attributes(files[-1])
 
-
+def execute_project_file(**kw):
+    contents = get_file(kw, ".project")
+    if not contents: return False
+    tmux_shell(contents, session = "temp", pane = 0)
+    return True
+        
 import flowconfig
