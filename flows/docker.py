@@ -10,7 +10,7 @@ filenames = ["Dockerfile", "Dockerfile"]
 def alt(**kw):
 
     command = "docker run -i -t --entrypoint=/bin/bash %s" % kw.get("directory_name")
-    u.shell(command, **kw)
+    u.tmux_shell(command, **kw)
 
 # build docker file by default
 def run(**kw):
@@ -18,4 +18,4 @@ def run(**kw):
     command = "cd %s && " % kw.get("basepath")
     command += "docker build -t %s ." % kw.get("directory_name")
 
-    u.shell(command, **kw)
+    u.tmux_shell(command, session = "temp", pane = 0)
