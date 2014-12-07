@@ -1,6 +1,7 @@
 import flowtils as u
 import webbrowser
 
+filenames = [".idea"]
 extensions = ["md"]
 
 def test(**kwargs):
