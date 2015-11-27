@@ -1,6 +1,6 @@
 import flowtils as u
 
-extensions = ["c"]
+extensions = ["rs"]
 
 def run(**kw):
     project_file_contents = u.get_file(kw, ".project")
@@ -8,7 +8,6 @@ def run(**kw):
         u.tmux_shell("cd %s; %s" % (kw.get("basepath"), project_file_contents), session = "temp", pane = 0)
         return
 
-    command = "gcc %s; ./a.out" % kw.get("filepath")
+    output_file = kw.get("filepath").split(".rs")[0]
+    command = "rustc %s; %s" % (kw.get("filepath"), output_file)
     u.shell(command, **kw)
-
-
