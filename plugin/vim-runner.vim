@@ -1,4 +1,4 @@
-if exists("g:vim_flow_load") || &cp
+if exists("g:vim_flow_loaded") || &cp
   finish
 endif
 let g:vim_flow_loaded = 1
@@ -13,22 +13,15 @@ python <<EOF
 from os import path as p
 import sys
 import vim
-import imp
 
-# generate path that needs to 
-base_path = p.abspath(p.join(vim.eval("expand('<sfile>:p:h')"), "../lib"))
-sys.path.insert(0, base_path)
+lib_path = p.abspath(p.join(vim.eval("expand('<sfile>:p:h')"), "../lib"))
+sys.path.insert(0, lib_path)
 
-import flow
+import cli
 EOF
 
-" reload vim-flow
-command! -nargs=? Flow :python flow.run('<args>')
+" run flow for the current window
+command! FlowRun :python cli.run_flow()
 
 " toggle lock on / off for current file
-command! FlowLock :python flow.lock()
-
-" pass a command directly to the tmux windo
-command! -nargs=1 FlowMux python flow.tmux('<args>')
-
-
+command! FlowToggle :python cli.toggle_lock()
