@@ -1,84 +1,79 @@
-import vim
-import os
-import imp
-import glob
-import modules
-import re
-import flowtils
-import flowconfig
+import os.path
+import yaml
 
-filelock = None
 
-def run(method = "run"):
+def get_defs(filepath):
+    '''get_flow_defs: returns the best matched flowfile and returns the flow_defs
 
-    # update flow configuration
-    flowconfig.update()
+    This method walks directories from the current filepath all the way to `/`
+    and will return the first `.flow.yml` file it finds.
 
-    # make sure to normalize, as <n-args> passes an empty string if no args
-    if not method:
-        method = "run"
-
-    # generate file information to be passed around as kwargs
-    filepath = _get_file_path()
-    attrs = flowtils.get_path_attributes(filepath)
-
-    # find the correct module 
-    module = _get_module(**attrs)
-
-    if not module or not hasattr(module, method):
-        print "No %s method available for this filepath" % method
-        return
-
-    # call method
-    getattr(module, method)(**attrs)
-
-def lock():
-    
-    global filelock
-    if not filelock:
-        filelock = _get_file_path()
-        print "File locked"
+    '''
+    dirpath = os.path.dirname(filepath)
+    flow_filepath = None
+    while dirpath != '/':
+        flow_filepath = os.path.join(dirpath, '.flow.yml')
+        if os.path.exists(flow_filepath):
+            break
+        dirpath = os.path.abspath(os.path.join(dirpath, '../'))
     else:
-        filelock = None
-        print "File lock released"
+        print 'No `.flow.yml` found...'
+        return None
 
-def tmux(command):
-
-    flowtils.tmux_shell(command)
-
-def _get_file_path():
-
-    global filelock
-    if filelock:
-        return filelock
-    return vim.current.buffer.name
-
-# **kwargs is a hash from flowtils.get_path_attributes
-def _get_module(**kw):
-
-    flows = modules.modules()
-
-    # you can override the command in any file
-    if flows.get("command").has_command(**kw):
-        return flows.get("command")
-
-    # check for flowfile
-    if flows.get("flowfile").has_command(**kw):
-        return flows.get("flowfile")
-
-    # check all modules
-    for module_name, module in flows.iteritems():
-        # check against extension
-        if kw.get("extension") and hasattr(module, "extensions") and kw.get("extension") in module.extensions:
-            return module
-        # check if its a registered filename, for instance Gemfile or Rakefile (ruby)
-        if hasattr(module, "filenames") and kw.get("filename") in module.filenames:
-            return module
-    
-    # no module available, call the shell module
-    if flows.get("anonymous").has_shebang(kw.get("filepath")):
-        return flows.get("anonymous")
+    try:
+        with open(flow_filepath, 'r') as fh:
+            flow_defs = yaml.safe_load(fh)
+    except IOError:
+        print '`flow.yml` file at %s appears to be non-readable from within vim' % flow_filepath
+    except yaml.YAMLError:
+        print '`flow.yml` file at %s is not parseable yaml' % flow_filepath
+    else:
+        return flow_defs
 
     return None
 
 
+def _format_cmd_def(cmd_def, filepath):
+    '''_format_cmd_def: format a command def
+    
+    * template `filepath` into the cmd string
+    * add the runner field 
+    '''
+    templates = {
+        '{{filepath}}': filepath,
+    }
+    for keyword, value in templates.iteritems():
+        cmd_def['cmd'] = cmd_def['cmd'].replace(keyword, value)
+    cmd_def['cmd'] = cmd_def['cmd'].strip()
+
+    if 'tmux_session' in cmd_def:
+        cmd_def['tmux_pane'] = cmd_def.get('tmux_pane', 0)
+        cmd_def['runner'] = 'tmux'
+    else:
+        cmd_def['runner'] = 'vim'
+
+    return cmd_def
+
+
+def get_cmd_def(filepath, flow_defs):
+    '''find_cmd: returns a cmd_def based upon the flow_defs and filepath
+
+    return {
+        'runner': 'string | vim|tmux',
+        'tmux_sesion': 'string |  tmux_session',
+        'tmux_pane': 'int | tmux_pane',
+        'cmd': 'string, command to be executed',
+    }
+    '''
+    basename = os.path.basename(filepath)
+    filename, ext = basename.split('.', 1)
+
+    cmd_def = flow_defs.get('all')
+    if ext in flow_defs:
+        cmd_def = flow_defs[ext]
+
+    if cmd_def is None:
+        print 'no valid command definitions found in `.flow.yml`. Try adding an extension or `all` def...'
+        return None
+    
+    return _format_cmd_def(cmd_def, filepath)

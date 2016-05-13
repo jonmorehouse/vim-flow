@@ -1,0 +1,11 @@
+---
+all:
+  # clear the vim window before running any sort of command
+  cmd: clear; echo "hi"
+
+py: 
+  tmux_session: work
+  tmux_pane: 1
+  cmd: |
+    clear;
+    curl -vvv https://httpbin.org/delay/1
