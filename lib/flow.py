@@ -68,8 +68,12 @@ def get_cmd_def(filepath, flow_defs):
     basename = os.path.basename(filepath)
     filename, ext = basename.split('.', 1)
 
-    cmd_def = flow_defs.get('all')
-    if ext in flow_defs:
+    cmd_def = flow_defs.get('default')
+    if basename in flow_defs:
+        cmd_def = flow_defs[basename]
+    elif filename in flow_defs:
+        cmd_def = flow_defs[filename]
+    elif ext in flow_defs:
         cmd_def = flow_defs[ext]
 
     if cmd_def is None:
