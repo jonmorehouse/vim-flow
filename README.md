@@ -1,6 +1,6 @@
 # Vim Flow
 
-An approach to building dev-built-test cycles from all within vim.
+Declarative build-test-run workflow with Vim.
 
 ```yaml
 #.flow.yaml
