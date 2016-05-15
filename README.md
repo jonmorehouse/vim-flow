@@ -191,7 +191,7 @@ map <Leader>l :FlowToggleLock<CR>
 It's definitely possible to write the entirety of this plugin in vimscript, but I've found that it s more intuitive to use python. It's a pretty standard vim dependency and allows for testing (coming soon) and a better maintenance/development experience. The vimscript surface area is super minimal and can be found #[here](https://github.com/jonmorehouse/vim-flow/blob/master/plugin/vim-flow.vim).
 
 
-> Why not use <insert vim plugin here>?
+> Why not use foo plugin?
 
 Plugins exist for many different runtimes/languages etc in `vim`, but attempting to set up Vim for every unique project is tedious and requires many different plugins. With `vim-flow` you have a common interface to running, testing and developing within a project. 
 
