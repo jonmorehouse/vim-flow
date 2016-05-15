@@ -30,7 +30,8 @@ def _build_script(cmd_def):
 def _cleanup_script(filepath):
     '''_cleanup_script: remove the temp file
     '''
-    os.remove(filepath)
+    # os.remove(filepath)
+    pass
 
 
 @contextlib.contextmanager

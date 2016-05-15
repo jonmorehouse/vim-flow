@@ -24,4 +24,4 @@ EOF
 command! FlowRun :python cli.run_flow()
 
 " toggle lock on / off for current file
-command! FlowToggle :python cli.toggle_lock()
+command! FlowToggleLock :python cli.toggle_lock()
