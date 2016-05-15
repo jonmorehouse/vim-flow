@@ -1,11 +1,89 @@
 ---
-all:
-  # clear the vim window before running any sort of command
-  cmd: clear; echo "hi"
-
-py: 
-  tmux_session: work
-  tmux_pane: 1
+default:
   cmd: |
-    clear;
-    curl -vvv https://httpbin.org/delay/1
+    #!/bin/bash
+    clear
+    set -e
+    echo -e "unable to find a flow for {{filepath}} ..."
+    echo -e "attempting to execute the file directly ..."
+    {{filepath}}
+
+# fmt, build and execute golang files
+go: 
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "running gofmt for $(basename {{filepath}}) ..."
+    gofmt -d {{filepath}}
+    echo "building $(basename {{filepath}}) ..."
+    go build -o /tmp/$(basename {{filepath}}) {{filepath}} 
+    echo "executing $(basename {{filepath}})"
+    /tmp/$(basename {{filepath}})
+
+# build and execute rust source files
+rs:
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "compiling $(basename {{filepath}}) ..."
+    rustc {{filepath}} -o /tmp/$(basename {{filepath}})
+    echo "executing $(basename {{filepath}}) ..."
+    /tmp/$(basename {{filepath}})
+
+# flake8 and execute python source files
+py:
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "running flake8 ..."
+    flake8 {{filepath}}
+    echo "executing $(basename {{filepath}}) ...".
+    /usr/bin/env python {{filepath}}
+
+# ruby files
+rb:
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "executing $(basename {{filepath}}) ..."
+    ruby {{filepath}}
+
+# load the yaml document in python and make sure it is parseable without errors
+yml:
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "loading yaml and parsing it in python to make sure its valid ..."
+    /usr/bin/env python << EOF
+    import yaml
+    try:
+      with open('{{filepath}}', 'r') as fh:
+        yaml.load(fh.read())
+    except yaml.YAMLError:
+      print "invalid yaml ..."
+    else:
+      print "valid yaml..."
+    EOF
+
+# parse the json document using python and make sure it is valid
+json:
+  cmd: |
+    #!/bin/bash
+    clear
+    set -e
+    echo "loading json and parsing it in python to ensure it is valid ..."
+    /usr/bin/env python << EOF
+    import json
+    try:
+      with open('{{filepath}}', 'r') as fh:
+        json.loads(fh.read())
+    except ValueError as e:
+      print "invalid json ..."
+    else:
+      print "valid json ..."
+    EOF
