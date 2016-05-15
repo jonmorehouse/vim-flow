@@ -66,7 +66,7 @@ def get_cmd_def(filepath, flow_defs):
     }
     '''
     basename = os.path.basename(filepath)
-    filename, ext = basename.split('.', 1)
+    filename, ext = os.path.splitext(basename)
 
     cmd_def = flow_defs.get('default')
     if basename in flow_defs:
@@ -75,6 +75,8 @@ def get_cmd_def(filepath, flow_defs):
         cmd_def = flow_defs[filename]
     elif ext in flow_defs:
         cmd_def = flow_defs[ext]
+    elif ext.replace('.', '') in flow_defs:
+        cmd_def = flow_defs[ext.replace('.', '')]
 
     if cmd_def is None:
         print 'no valid command definitions found in `.flow.yml`. Try adding an extension or `all` def...'
