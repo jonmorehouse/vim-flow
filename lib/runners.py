@@ -1,7 +1,6 @@
 import contextlib
 import os
 import subprocess
-import stat
 import tempfile
 import vim
 
@@ -23,7 +22,7 @@ def _build_script(cmd_def):
 
     # ensure that the filepath is executable by the runner process, the default
     # tempfile is 0600
-    os.chmod(filepath, 0777)
+    os.chmod(filepath, 777)
     return filepath
 
 

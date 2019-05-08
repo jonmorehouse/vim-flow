@@ -21,7 +21,7 @@ import cli
 EOF
 
 " run flow for the current window
-command! FlowRun :python cli.run_flow()
+command! FlowRun :python3 cli.run_flow()
 
 " toggle lock on / off for current file
-command! FlowToggleLock :python cli.toggle_lock()
+command! FlowToggleLock :python3 cli.toggle_lock()
