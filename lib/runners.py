@@ -10,7 +10,7 @@ def _build_script(cmd_def):
     '''_build_script: in order to simplify things such as escaping and
     multiline commands, we template out all `cmds` into a script that is
     written to a tempfile and executed
-    ''' 
+    '''
     fh, filepath = tempfile.mkstemp()
 
     # if the script doesn't start with a hashbang, then we default to the local $SHELL var
@@ -22,7 +22,7 @@ def _build_script(cmd_def):
     os.write(fh, '\n')
 
     # ensure that the filepath is executable by the runner process, the default
-    # tempfile is 0600 
+    # tempfile is 0600
     os.chmod(filepath, 0777)
     return filepath
 
@@ -30,8 +30,7 @@ def _build_script(cmd_def):
 def _cleanup_script(filepath):
     '''_cleanup_script: remove the temp file
     '''
-    # os.remove(filepath)
-    pass
+    os.remove(filepath)
 
 
 @contextlib.contextmanager
@@ -58,11 +57,11 @@ def tmux_runner(cmd_def):
     '''tmux_runner: accept a command definition and then run it as a shell script in the tmux session.pane.
     '''
     with _script(cmd_def) as script:
-        args = ['tmux', 
-                'send', 
-                '-t', 
-                '%s.%s' % (cmd_def['tmux_session'], cmd_def['tmux_pane']), 
-                'sh -c \'%s\'' % script, 
+        args = ['tmux',
+                'send',
+                '-t',
+                '%s.%s' % (cmd_def['tmux_session'], cmd_def['tmux_pane']),
+                'sh -c \'%s\'' % script,
                 'ENTER']
 
         env = os.environ.copy()

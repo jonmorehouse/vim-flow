@@ -4,12 +4,12 @@ endif
 let g:vim_flow_loaded = 1
 
 " make sure that vim is compiled with correct python2.7 suppor
-if !has("python")
-  echo "vim-flow requires python support"
+if !has("python3")
+  echo "vim-flow requires python3 support"
   finish
 endif
 
-python <<EOF
+python3 <<EOF
 from os import path as p
 import sys
 import vim

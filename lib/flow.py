@@ -17,16 +17,16 @@ def get_defs(filepath):
             break
         dirpath = os.path.abspath(os.path.join(dirpath, '../'))
     else:
-        print 'No `.flow.yml` found...'
+        print('No `.flow.yml` found...')
         return None
 
     try:
         with open(flow_filepath, 'r') as fh:
             flow_defs = yaml.safe_load(fh)
     except IOError:
-        print '`flow.yml` file at %s appears to be non-readable from within vim' % flow_filepath
+        print('`flow.yml` file at %s appears to be non-readable from within vim' % flow_filepath)
     except yaml.YAMLError:
-        print '`flow.yml` file at %s is not parseable yaml' % flow_filepath
+        print('`flow.yml` file at %s is not parseable yaml' % flow_filepath)
     else:
         return flow_defs
 
@@ -35,9 +35,9 @@ def get_defs(filepath):
 
 def _format_cmd_def(cmd_def, filepath):
     '''_format_cmd_def: format a command def
-    
+
     * template `filepath` into the cmd string
-    * add the runner field 
+    * add the runner field
     '''
     templates = {
         '{{filepath}}': filepath,
@@ -79,7 +79,7 @@ def get_cmd_def(filepath, flow_defs):
         cmd_def = flow_defs[ext.replace('.', '')]
 
     if cmd_def is None:
-        print 'no valid command definitions found in `.flow.yml`. Try adding an extension or `all` def...'
+        print('no valid command definitions found in `.flow.yml`. Try adding an extension or `all` def...')
         return None
-    
+
     return _format_cmd_def(cmd_def, filepath)

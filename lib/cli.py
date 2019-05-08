@@ -4,7 +4,7 @@ import os
 import flow
 import runners
 
-lock_cache={}
+lock_cache = {}
 
 def run_flow(cache=lock_cache):
     '''flow: run a flow for the current filepath
@@ -35,10 +35,10 @@ def run_flow(cache=lock_cache):
 def toggle_lock(cache=lock_cache):
     if 'filepath' in cache:
         del cache['filepath']
-        print "file lock released..."
+        print("file lock released...")
     else:
         cache['filepath'] = _get_filepath()
-        print "file lock set..."
+        print("file lock set...")
 
 def _get_filepath():
     return vim.current.buffer.name
