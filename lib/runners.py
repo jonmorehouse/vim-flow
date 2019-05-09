@@ -1,6 +1,8 @@
 import contextlib
 import os
 import subprocess
+import stat
+import time
 import tempfile
 import vim
 
@@ -10,26 +12,26 @@ def _build_script(cmd_def):
     multiline commands, we template out all `cmds` into a script that is
     written to a tempfile and executed
     '''
-    fh, filepath = tempfile.mkstemp()
+    filepath = '/tmp/flow--{}'.format(int(time.time()))
 
     # if the script doesn't start with a hashbang, then we default to the local $SHELL var
-    if not cmd_def['cmd'].startswith('#!'):
-        hashbang = '#!{}'.format(os.environ.get('SHELL', '/usr/bin/env bash'))
-        os.write(fh, hashbang)
-        os.write(fh, '\n')
-    os.write(fh, cmd_def['cmd'])
-    os.write(fh, '\n')
+    with open(filepath, 'w') as fh:
+        if not cmd_def['cmd'].startswith('#!'):
+            hashbang = '#!{}\n'.format(os.environ.get('SHELL', '/usr/bin/env bash'))
+            fh.write(hashbang)
 
-    # ensure that the filepath is executable by the runner process, the default
-    # tempfile is 0600
-    os.chmod(filepath, 777)
+        fh.write(cmd_def['cmd'])
+        fh.write('\n')
+
+    st = os.stat(filepath)
+    os.chmod(filepath, st.st_mode | stat.S_IEXEC)
     return filepath
 
 
 def _cleanup_script(filepath):
     '''_cleanup_script: remove the temp file
     '''
-    os.remove(filepath)
+    # os.remove(filepath)
 
 
 @contextlib.contextmanager

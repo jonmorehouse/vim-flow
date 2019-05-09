@@ -42,7 +42,7 @@ def _format_cmd_def(cmd_def, filepath):
     templates = {
         '{{filepath}}': filepath,
     }
-    for keyword, value in templates.iteritems():
+    for keyword, value in templates.items():
         cmd_def['cmd'] = cmd_def['cmd'].replace(keyword, value)
     cmd_def['cmd'] = cmd_def['cmd'].strip()
 
