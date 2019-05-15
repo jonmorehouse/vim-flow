@@ -1,4 +1,5 @@
 import contextlib
+import glob
 import os
 import subprocess
 import stat
@@ -13,6 +14,7 @@ def _build_script(cmd_def):
     written to a tempfile and executed
     '''
     filepath = '/tmp/flow--{}'.format(int(time.time()))
+    print(filepath)
 
     # if the script doesn't start with a hashbang, then we default to the local $SHELL var
     with open(filepath, 'w') as fh:
@@ -28,10 +30,12 @@ def _build_script(cmd_def):
     return filepath
 
 
-def _cleanup_script(filepath):
-    '''_cleanup_script: remove the temp file
+def cleanup():
+    '''cleanup: due to the tmux send keys command being asynchronous, we can not guarantee when a command is finished
+    and therefore can not clean up after ourselves consistently.
     '''
-    # os.remove(filepath)
+    for filepath in glob.glob("/tmp/flow--*"):
+        os.remove(filepath)
 
 
 @contextlib.contextmanager
@@ -44,12 +48,12 @@ def _script(cmd_def):
     '''
     filepath = _build_script(cmd_def)
     yield filepath
-    _cleanup_script(filepath)
 
 
 def vim_runner(cmd_def):
     '''vim_runner: run a command in the vim tty
     '''
+    cleanup()
     with _script(cmd_def) as script_path:
         vim.command('! {}'.format(script_path))
 
@@ -57,6 +61,7 @@ def vim_runner(cmd_def):
 def tmux_runner(cmd_def):
     '''tmux_runner: accept a command definition and then run it as a shell script in the tmux session.pane.
     '''
+    cleanup()
     with _script(cmd_def) as script:
         args = ['tmux',
                 'send',
