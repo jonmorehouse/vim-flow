@@ -28,6 +28,8 @@ def run_flow(cache=lock_cache):
     runner = {
         'vim': runners.vim_runner,
         'tmux': runners.tmux_runner,
+        'sync-remote': runners.sync_remote_runner,
+        'async-remote': runners.async_remote_runner,
     }[cmd_def['runner']]
 
     runner(cmd_def)

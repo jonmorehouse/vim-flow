@@ -1,7 +1,10 @@
+" NOTE: we cannot do hot reloading without dynamically reloading python3 modules
 if exists("g:vim_flow_loaded") || &cp
   finish
 endif
 let g:vim_flow_loaded = 1
+
+let g:vim_flow_remote_address = "http://localhost:7000"
 
 " make sure that vim is compiled with correct python2.7 suppor
 if !has("python3")

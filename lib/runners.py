@@ -5,7 +5,10 @@ import subprocess
 import stat
 import time
 import tempfile
+import urllib.parse
 import vim
+
+import requests
 
 
 def _build_script(cmd_def):
@@ -73,3 +76,26 @@ def tmux_runner(cmd_def):
         env = os.environ.copy()
         process = subprocess.Popen(args, env=env)
         process.wait()
+
+
+def async_remote_runner(cmd_def):
+    '''async_remote_runner: run the command against a vim-flow remote
+    '''
+    base_url = vim.eval('g:vim_flow_remote_address')
+    if not base_url.startswith('http'):
+        base_url = 'http://' + url
+    url = urllib.parse.urljoin(base_url, 'async')
+
+    try:
+        resp = requests.post(url, data=cmd_def['cmd'])
+    except Exception:
+        vim.command('echom "vim-flow: unable to submit job: {}"'.format(url))
+        return
+
+    vim.command('echom "vim-flow: async job submitted {}"'.format(resp.status_code))
+
+
+def sync_remote_runner(cmd_def):
+    '''sync_remote_runner: run the command against a vim-flow remote
+    '''
+    vim.command('echom "vim-flow: {}"'.format(res))
