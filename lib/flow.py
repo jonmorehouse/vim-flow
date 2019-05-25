@@ -58,6 +58,9 @@ def _format_cmd_def(cmd_def, filepath):
         print('invalid runner, must be one of vim,tmux,async-remote,sync-remote')
         return
 
+    if 'cmd' in cmd_def and not cmd_def['cmd'].startswith('#!'):
+        cmd_def['cmd'] = '#!/usr/bin/env bash\n' + cmd_def['cmd']
+
     return cmd_def
 
 
