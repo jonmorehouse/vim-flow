@@ -39,8 +39,10 @@ def _format_cmd_def(cmd_def, filepath):
     * template `filepath` into the cmd string
     * add the runner field
     '''
+    _dir = os.path.dirname(filepath)
     templates = {
         '{{filepath}}': filepath,
+        '{{dir}}': _dir,
     }
     for keyword, value in templates.items():
         cmd_def['cmd'] = cmd_def['cmd'].replace(keyword, value)
