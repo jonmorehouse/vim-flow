@@ -24,9 +24,14 @@ import cli
 EOF
 
 " run flow for the current window
-command! FlowRun :python3 cli.run_flow()
+command! FlowRun :python3 cli.run_flow("")
 
 " toggle lock on / off for current file
-command! FlowToggleLock :python3 cli.toggle_lock()
+command! FlowToggleLock :python3 cli.toggle_lock("")
 
 command! -nargs=1 FlowSet :python3 cli.toggle_lock(<f-args>)
+
+function! FlowSetFile(filename)
+  :python3 cli.toggle_lock(vim.eval("a:filename"))
+endfunction
+
