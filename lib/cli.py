@@ -15,6 +15,10 @@ def run_flow(cache=lock_cache):
     '''
     if 'filepath' in lock_cache:
         filepath = lock_cache['filepath']
+
+        dirpath = os.path.dirname(filepath)
+        dirpath = os.path.expanduser(dirpath)
+        os.chdir(dirpath)
     else:
         filepath = _get_filepath()
     flow_defs = flow.get_defs(filepath)

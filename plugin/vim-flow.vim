@@ -34,4 +34,3 @@ command! -nargs=1 FlowSet :python3 cli.toggle_lock(<f-args>)
 function! FlowSetFile(filename)
   :python3 cli.toggle_lock(vim.eval("a:filename"))
 endfunction
-
