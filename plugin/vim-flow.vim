@@ -28,3 +28,5 @@ command! FlowRun :python3 cli.run_flow()
 
 " toggle lock on / off for current file
 command! FlowToggleLock :python3 cli.toggle_lock()
+
+command! -nargs=1 FlowSet :python3 cli.toggle_lock(<f-args>)

@@ -34,13 +34,19 @@ def run_flow(cache=lock_cache):
 
     runner(cmd_def)
 
-def toggle_lock(cache=lock_cache):
+
+def toggle_lock(filepath, cache=lock_cache):
+    if filepath:
+        cache['filepath'] = filepath
+        return
+
     if 'filepath' in cache:
         del cache['filepath']
         print("file lock released...")
     else:
         cache['filepath'] = _get_filepath()
         print("file lock set...")
+
 
 def _get_filepath():
     return vim.current.buffer.name
